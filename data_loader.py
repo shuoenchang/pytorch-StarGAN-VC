@@ -4,7 +4,7 @@ import os
 import librosa
 import numpy as np
 import torch
-from sklearn.preprocessing import LabelBinarizer
+from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 from torch.utils.data.dataloader import DataLoader
 from torch.utils.data.dataset import Dataset
 
@@ -27,6 +27,8 @@ class AudioDataset(Dataset):
         filename = os.path.basename(p)
         speaker = filename.split(sep='_', maxsplit=1)[0]
         label = self.encoder.transform([speaker])[0]
+        if   label==[0]:  label=[1, 0]
+        elif label==[1]:  label=[0, 1]
         mcep = np.load(p)
         mcep = torch.FloatTensor(mcep)
         mcep = torch.unsqueeze(mcep, 0)

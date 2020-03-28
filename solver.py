@@ -250,6 +250,8 @@ class Solver(object):
                     d, speaker = TestSet(self.test_dir).test_data()
                     target = random.choice([x for x in speakers if x != speaker])
                     label_t = self.spk_enc.transform([target])[0]
+                    if   label_t==[0]:  label_t=[1, 0]
+                    elif label_t==[1]:  label_t=[0, 1]
                     label_t = np.asarray([label_t])
 
                     for filename, content in d.items():
@@ -356,6 +358,8 @@ class Solver(object):
             print(target)
             assert target in speakers
             label_t = self.spk_enc.transform([target])[0]
+            if   label_t==[0]:  label_t=[1, 0]
+            elif label_t==[1]:  label_t=[0, 1]
             label_t = np.asarray([label_t])
             
             with torch.no_grad():
